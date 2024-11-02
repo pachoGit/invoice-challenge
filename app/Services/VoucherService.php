@@ -145,4 +145,9 @@ class VoucherService
             'usd' => (double) $totalSum * $PEN_TO_USD,
         ];
     }
+
+    public function delete(string $id)
+    {
+        return Voucher::where('id', $id)->delete();
+    }
 }
