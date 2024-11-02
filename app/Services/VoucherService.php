@@ -12,9 +12,32 @@ use SimpleXMLElement;
 
 class VoucherService
 {
-    public function getVouchers(int $page, int $paginate): LengthAwarePaginator
+    public function getVouchers(array $args): LengthAwarePaginator
     {
-        return Voucher::with(['lines', 'user'])->paginate(perPage: $paginate, page: $page);
+        $page = $args['page'] ?? 1;
+        $paginate = $args['paginate'] ?? 10;
+
+        // return Voucher::with(['lines', 'user'])->paginate(perPage: $paginate, page: $page);
+
+        $query = Voucher::query();
+        $query->with(['lines', 'user']);
+
+        $query->when(isset($args['serie']), function ($query) use ($args) {
+            $query->where('serie', $args['serie']);
+        });
+
+        $query->when(isset($args['correlative']), function ($query) use ($args) {
+            $query->where('correlative', $args['correlative']);
+        });
+
+        if (isset($args['date_start']) && isset($args['date_end']))
+        {
+            $query->whereBetween('created_at', [$args['date_start'], $args['date_end']]);
+        }
+
+        $query->where('user_id', auth()->user()->getAuthIdentifier());
+
+        return $query->paginate(perPage: $paginate, page: $page);
     }
 
     /**
