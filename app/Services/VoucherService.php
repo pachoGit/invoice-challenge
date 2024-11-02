@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Voucher;
 use App\Models\VoucherLine;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use SimpleXMLElement;
 
 class VoucherService
@@ -77,4 +78,55 @@ class VoucherService
 
         return $voucher;
     }
+
+
+    /**
+     *
+     * @param Collection $voucher
+     *
+     * @return int
+     */
+    public function regularizeVouchers(Collection $vouchers): int
+    {
+        $upsert = [];
+        try
+        {
+            foreach ($vouchers as $voucher)
+            {
+                $xml = new SimpleXMLElement($voucher->xml_content);
+
+                $numeration = (string) $xml->xpath('//cbc:ID')[0];
+                $typevoucher = (string) $xml->xpath('//cbc:InvoiceTypeCode')[0];
+                $currency = (string) $xml->xpath('//cbc:DocumentCurrencyCode')[0];
+
+                [$serie, $correlative] = explode('-', $numeration);
+
+                $upsert[] = [
+                    'id' => $voucher->id,
+                    'serie' => $serie,
+                    'correlative' => $correlative,
+                    'type_voucher' => $typevoucher,
+                    'type_currency' => $currency,
+                    'issuer_name' => $voucher->issuer_name,
+                    'issuer_document_type' => $voucher->issuer_document_type,
+                    'issuer_document_number' => $voucher->issuer_document_number,
+                    'receiver_name' => $voucher->receiver_name,
+                    'receiver_document_type' => $voucher->receiver_document_type,
+                    'receiver_document_number' => $voucher->receiver_document_number,
+                    'total_amount' => $voucher->total_amount,
+                    'xml_content' => $voucher->xml_content,
+                    'user_id' => $voucher->user_id,
+                ];
+            }
+
+            Voucher::upsert($upsert, ['id'], ['serie', 'correlative', 'type_voucher', 'type_currency']);
+        }
+        catch (\Exception $exception)
+        {
+            throw $exception;
+        }
+
+        return count($upsert);
+    }
+
 }

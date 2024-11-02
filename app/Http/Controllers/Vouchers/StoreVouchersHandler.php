@@ -22,7 +22,6 @@ class StoreVouchersHandler
             if (!is_array($xmlFiles)) {
                 $xmlFiles = [$xmlFiles];
             }
-
             $xmlContents = [];
             foreach ($xmlFiles as $xmlFile) {
                 $xmlContents[] = file_get_contents($xmlFile->getRealPath());

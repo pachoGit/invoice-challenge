@@ -15,6 +15,19 @@ class TestVoucherHandler
 
     public function __invoke()
     {
+        $query = Voucher::query();
+        $query->where('serie', null)
+            ->orWhere('correlative', null)
+            ->orWhere('type_voucher', null)
+            ->orWhere('type_currency', null);
+
+        $vouchers = $query->get();
+
+        Log::info('Vouchers: ' . $vouchers->count());
+
+        $vouchersId = $vouchers->pluck('id');
+        Log::info('Vouchers: ' . json_encode($vouchersId->all()));
+
         $voucher = Voucher::first();
         Log::info('Voucher: ' . $voucher->id);
 
