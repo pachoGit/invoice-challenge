@@ -129,4 +129,20 @@ class VoucherService
         return count($upsert);
     }
 
+
+    public function summaryAmountVouchers()
+    {
+        $PEN_TO_USD = 0.27;
+
+        $totalSum = VoucherLine::join('vouchers', 'vouchers.id', '=', 'voucher_lines.voucher_id')
+            ->where('vouchers.user_id', auth()->user()->getAuthIdentifier())
+            ->selectRaw('SUM(voucher_lines.quantity * voucher_lines.unit_price) as total_sum')
+            ->value('total_sum');
+
+        // NOTE: Simple conversion
+        return [
+            'pen' => (double) $totalSum,
+            'usd' => (double) $totalSum * $PEN_TO_USD,
+        ];
+    }
 }
