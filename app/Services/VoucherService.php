@@ -178,6 +178,7 @@ class VoucherService
 
     public function delete(string $id)
     {
-        return Voucher::where('id', $id)->delete();
+        return Voucher::where('user_id', auth()->user()->getAuthIdentifier())
+            ->where('id', $id)->delete();
     }
 }
