@@ -63,6 +63,20 @@ php artisan migrate</code></pre>
 <p>Deberás enviar el enlace del repositorio lo correos <code>administracion@idbi.pe</code>, <code>people@idbi.pe</code> y <code>product@idbi.pe</code>. Puedes indicar documentación de las nuevas funcionalidades o una descripción/diagramas/etc que creas necesario.</p>
 <h2 id="tienes-alguna-duda">¿Tienes alguna duda?</h2>
 <p>Puedes enviar un correo a <code>anthony.rosado.idbi@gmail.com</code> enviando tus consultas y se te responderá a la brevedad.</p>
+<h2 id="documentación-de-las-nuevas-functionalidades">Documentación de las nuevas functionalidades</h2>
+<h3 id="levantar-el-proyecto-con-los-pasos-anteriores">1. Levantar el proyecto con los pasos anteriores</h3>
+<h3 id="configurar-la-base-de-datos-y-la-colas-de-procesos">2. Configurar la base de datos y la colas de procesos</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">php</span> artisan queue:table</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="ex">php</span> artisan migrate</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ex">php</span> artisan queue:work -v</span></code></pre></div>
+<h3 id="prueba-de-los-endpoints">3. Prueba de los endpoints</h3>
+<p>La herramienta para el llamado de las API’s está en Insomnia, el archivo exportado se encuentra en la raiz del proyecto con el nombre de <code>InvoiceChallegenInsomnia.json</code></p>
+<h3 id="regulalizar-los-vouchers">4. Regulalizar los vouchers</h3>
+<p>Para reguralizar los vouchers se ha creando un comando, puede ejecutar con lo siguiente:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="ex">php</span> artisan voucher:regularize <span class="dt">{userEmail}</span></span></code></pre></div>
+<p>Reemplaze “userEmail” por correo electronico del usuario para regularizar todo sus vouchers</p>
+<p><span class="citation" data-cites="example">@example</span></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="ex">php</span> artisan voucher:regularize idbi@example.pe</span></code></pre></div>
 
 </body>
 </html>

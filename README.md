@@ -76,3 +76,36 @@ Deberás enviar el enlace del repositorio lo correos `administracion@idbi.pe`, `
 ## ¿Tienes alguna duda?
 
 Puedes enviar un correo a `anthony.rosado.idbi@gmail.com` enviando tus consultas y se te responderá a la brevedad.
+
+## Documentación de las nuevas functionalidades
+
+### 1. Levantar el proyecto con los pasos anteriores
+
+### 2. Configurar la base de datos y la colas de procesos
+
+``` sh
+php artisan queue:table
+php artisan migrate
+php artisan queue:work -v
+```
+
+### 3. Prueba de los endpoints
+
+La herramienta para el llamado de las API's está en Insomnia, el archivo exportado se 
+encuentra en la raiz del proyecto con el nombre de `InvoiceChallegenInsomnia.json`
+
+### 4. Regulalizar los vouchers
+
+Para reguralizar los vouchers se ha creando un comando, puede ejecutar con lo siguiente:
+
+``` sh
+php artisan voucher:regularize {userEmail}
+```
+
+Reemplaze "userEmail" por correo electronico del usuario para regularizar todo sus vouchers
+
+@example
+``` sh
+php artisan voucher:regularize idbi@example.pe
+```
+
