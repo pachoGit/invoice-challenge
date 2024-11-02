@@ -28,14 +28,7 @@ class StoreVouchersJob implements ShouldQueue
      */
     public function handle(): void
     {
-        try
-        {
-            $user = auth()->user();
-            $vouchers = $this->voucherService->storeVouchersFromXmlContents($this->xmlContents, $user);
-        }
-        catch (\Exception $e)
-        {
-            Log::error('Error in StoreVouchersJob: ' . $e->getMessage());
-        }
+        $user = auth()->user();
+        $vouchers = $this->voucherService->storeVouchersFromXmlContents($this->xmlContents, $user);
     }
 }

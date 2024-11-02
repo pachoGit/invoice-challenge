@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Comprobantes Subidos</title>
 </head>
+
 <body>
     <h1>Estimado {{ $user->name }},</h1>
     <p>Hemos recibido tus comprobantes con los siguientes detalles:</p>
@@ -17,6 +19,18 @@
         <li>Monto Total: {{ $comprobante->total_amount }}</li>
     </ul>
     @endforeach
+
+    @if (count($errors) > 0)
+        <p> Se ha encotrado algunos errores al recibir algunos comprobantes </p>
+        @foreach ($errors as $error)
+            <ul>
+                <li>Error: {{ $error }}</li>
+            </ul>
+
+        @endforeach
+    @endif
+
     <p>¡Gracias por usar nuestro servicio!</p>
 </body>
+
 </html>
